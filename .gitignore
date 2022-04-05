@@ -5,6 +5,7 @@ doc/
 build/
 deploy/
 javadoc/
+lib/
 reports/
 
 

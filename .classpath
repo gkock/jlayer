@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="src/classes"/>
+	<classpathentry kind="src" path="src/units"/>
+	<classpathentry kind="src" path="src/layers"/>
+	<classpathentry kind="src" path="src/tests/suiteA"/>
+	<classpathentry kind="src" path="src/tests/suiteB"/>
+	<classpathentry kind="src" path="src/test/suiteB"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
