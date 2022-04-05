@@ -1,6 +1,11 @@
-# ignore the bin and doc directories
+# ignore some directories
 bin/
 doc/
+build/
+deploy/
+javadoc/
+reports/
+
 
 # ignore class files and html files
 *.class
