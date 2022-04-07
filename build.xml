@@ -1,4 +1,4 @@
-<project name="JLayer-Dev" default="test.suiteC" basedir=".">
+<project name="jlayer" default="test.suiteC" basedir=".">
 	
 	<!-- property definitions -->
 	

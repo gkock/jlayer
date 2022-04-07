@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+ <html>
+   <head>
+     <title>JLayer-Dev / Tests</title>
+   </head>
+   <body>
+     <b>The JLayer building process is supported by an Ant build file</b> {@code build.xml},
+     a number of exemplary unit classes, and three test suites {@code suiteA},
+     {@code suiteB} and {@code suiteC}.
+     <p><p>
+     <b>The JLayer source code is organized as follows:</b>
+     
+     <ul><li>
+     {@code src/classes} contains the JLayer classes;
+     </li><li>
+     {@code src/units} contains the unit classes;
+     </li><li>
+     {@code src/layers} is the directory for generated layer classes;
+     </li><li>
+     {@code src/tests/suiteA} contains the test classes {@code A_*_Test} of {@code suiteA};
+     </li><li>
+     {@code src/tests/suiteB} contains the test classes {@code B_*_Test} of {@code suiteB};
+     </li><li>
+     {@code src/tests/suiteC} contains the test classes {@code C_*_Test} of {@code suiteC}.
+     </li></ul>
+     
+     <b>The Ant build file mentioned above has four main compile targets</b>:
+     
+     <ul><li>
+     {@code compile.classes} compiles the JLayer classes;
+     </li><li>
+     {@code compile.suiteA} compiles {@code suiteA};
+     </li><li>
+     {@code compile.suiteB} compiles {@code suiteB};
+     </li><li>
+     {@code compile.suiteC} compiles {@code suiteC}.
+     </li></ul>
+     
+     Each of these targets depends on it predecessor.
+     
+     <p><p>
+     <b>The test classes of three test suites are organized as follows</b>:
+     
+     <ul><li>
+     The classes of group {@code "suiteA"} perform basic tests.
+     </li><li>
+     The classes of group {@code "suiteB"}
+     take unit classes from directory {@code src/units},
+     generate corresponding layer classes and write the code into directory {@code src/layers}.
+     </li><li>
+     Finally, the classes of group {@code "suiteC"}
+     test the generated layer classes.
+     </li></ul>
+     
+     <p><p>
+     <b>The testing process is supported by the following Ant targets,
+     which are executed in the given order</b>:
+     
+     <ul><li>
+     {@code test.suiteA} performs basis tests;
+     </li><li>
+     {@code test.suiteB} generates layer classes;
+     </li><li>
+     {@code test.suiteC} tests the generated layer classes.
+     </li></ul>
+     
+     Again, each target depends on its predecessor, 
+     and in addition on its corresponding {@code compile} target.
+     
+     <p><p>
+     <b>An explanatory note on {@code suiteB}:</b>
+     
+     <ul><li>
+     For configuration reasons {@code suiteB} contains test class {@link org.jlayer.impl.B_Config_Test} 
+     being the only one belonging to group {@code "config"} and as such
+     is the first test class of {@code suiteB} to be executed.
+     </li><li>
+     Class {@link org.jlayer.impl.B_Config_Test} contains methods 
+     {@link org.jlayer.impl.B_Config_Test#beforeSuite()} and
+     {@link org.jlayer.impl.B_Config_Test#afterSuite()} being executed 
+     before or after the other {@code suiteB} test classes.
+     </li><li>
+     Method {@link org.jlayer.impl.B_Config_Test#beforeSuite()} sets up the compiler 
+     and an annotation processor list - containing {@code org.jlayer.impl.Processor} only.
+     </li><li>
+     Method {@link org.jlayer.impl.B_Config_Test#afterSuite()} cleans up.
+     </li><li>
+     The other tests from {@code suiteB} (e.g. {@link org.jlayer.impl.B_LifeUnit_Test})
+     at first execute a compilation task 
+     (see {@link org.jlayer.impl.B_LifeUnit_Test#beforeClass}) and then check
+     the objects of type {@code org.jlayer.impl.Unit} having been created by the 
+     annotation processor {@code org.jlayer.impl.Processor}.
+     </li><li>
+     For executing the compilation task, the static field {@code processedUnits}
+     of class {@code org.jlayer.impl.Processor} is used,
+     </li><li>
+     <b>This static field has been defined for test purposes only!</b>
+     </li></ul>
+     
+     <b>Finally, some notes on other Ant targets:</b>
+     
+     <ul><li>
+     {@code compile.units} compiles the unit classes from {@code src/units}
+     and to a certain extent substitutes target {@code test.suiteB}.
+     </li><li>
+     {@code test.choice} tests all classes belonging to groups {@code "config,choice"}
+     and not to groups {@code "ignore,todo"}.
+     </li><li>
+     {@code export.jar.*} exports {@code jlayer.jar} to a specific directory.
+     </li><li>
+     {@code javadoc.classes} generates documentation for the actual JLayer classes.
+     </li><li>
+     {@code javadoc.tests} generates documentation for the test classes.
+     </li></ul>
+     
+     @author Gerd Kock
+     @version 1.0
+   </body>
+ </html>

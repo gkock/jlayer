@@ -6,6 +6,11 @@
 	<classpathentry kind="src" path="src/tests/suiteA"/>
 	<classpathentry kind="src" path="src/tests/suiteB"/>
 	<classpathentry kind="src" path="src/tests/suiteC"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/tests/testng.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
