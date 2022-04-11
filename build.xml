@@ -70,7 +70,7 @@
 	<!-- target: clean.layers -->
 	<target name="clean.layers">
 	        <delete includeemptydirs="true" quiet="true">
-	        	<fileset dir="${src.layers.dir}" includes="**/*"/>
+	        	<fileset dir="${src.layers.dir}" excludes="readme.txt" includes="**/*"/>
 	        </delete>
 	</target>
 	
