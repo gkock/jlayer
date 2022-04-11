@@ -1,5 +1,4 @@
 # ignore some directories
-src/layers
 bin/
 doc/
 build/
@@ -7,8 +6,8 @@ deploy/
 javadoc/
 reports/
 
-
-# ignore class files and html files
+# ignore generated java file, class files and html files
+*Layer_*_.java
 *.class
 *.html
 
