@@ -28,7 +28,7 @@ import static org.jlayer.impl.Processor.processedUnits;
 //@Test(groups = {"suiteB", "choice"})
 public class B_MoreTests_Test {
 	
-	final int no = 6;
+	final int no = 7;
 	
 	// All classes that evoke warnings 
 	String unit1 = userDir + "/src/units/more/tests/InUnit.java";
@@ -37,6 +37,7 @@ public class B_MoreTests_Test {
 	String unit4 = userDir + "/src/units/more/tests/InterfaceUnit.java";
 	String unit5 = userDir + "/src/units/more/tests/IndexUnit.java";
 	String unit6 = userDir + "/src/units/more/tests/ValUnit.java";
+	String unit7 = userDir + "/src/units/more/tests/Unit.java";
 	Unit processedUnit;
 	
 	// a "local" diagnostic collector to be used in this class
@@ -47,7 +48,7 @@ public class B_MoreTests_Test {
     	// clear the list of processedUnits and compile next unit
     	processedUnits.clear();
 		Iterable<? extends JavaFileObject> compilationUnits = 
-				fileManager.getJavaFileObjects(unit1, unit2, unit3, unit4, unit5, unit6);
+				fileManager.getJavaFileObjects(unit1, unit2, unit3, unit4, unit5, unit6, unit7);
 		CompilationTask task = compiler.getTask(null, fileManager, diagnosticCollector,
 												optionList, null, compilationUnits);
 		task.setProcessors(processors);

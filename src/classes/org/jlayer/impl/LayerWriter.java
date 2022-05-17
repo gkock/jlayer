@@ -1038,6 +1038,9 @@ class LayerWriter {
 				appendSignature(srcCode, unitType, mDescr, DimKind.NN, "{");
 			}
 			
+			// checks
+			appendChecksBeforeCall(srcCode, mDescr);
+			
 			// delegating to the nested classes
 			srcCode.append(tab(2) + "switch(this.dims()) {\n");	
 			srcCode.append(tab(3) + "case 1:\n");
@@ -1159,6 +1162,27 @@ class LayerWriter {
 			case D2: srcCode.append(tab(4) + "int _x2 = iterator.getX2();\n");
 			case D1: srcCode.append(tab(4) + "int _x1 = iterator.getX1();\n"); break;
 			default: throw new JLayerException();
+		}
+	}
+	
+	private void appendChecksBeforeCall(StringBuilder srcCode, MethodDescriptor mDescr){
+		final int noOfPars = mDescr.paramTypes.size();
+		for (int i = 0; i < noOfPars; i++){
+			String theParam = mDescr.paramNames.get(i);
+			TypeDescriptor theType = mDescr.paramTypes.get(i);
+			if (theType.typeMirror.getKind()==javax.lang.model.type.TypeKind.DECLARED) {
+				String msg = "\"Invocation of method layer " + mDescr.itemName + "(): parameter " + theParam + "==null\"";
+				srcCode.append(tab(2) + "if (" + theParam + "==null) throw new JLayerException(" + msg + ");\n");
+			}
+			if (theType.typeMirror.getKind()==javax.lang.model.type.TypeKind.ARRAY) {
+				String msg = "\"Invocation of method layer " + mDescr.itemName + "(): parameter " + theParam + "==null\"";
+				
+				srcCode.append(tab(2) + "if (" + theParam + "==null) throw new JLayerException(" + msg + ");\n");
+			}
+			if (mDescr.paramItems.get(i)){
+				String msg = "\"Invocation of method layer " + mDescr.itemName + "(): " + theParam + ".dims() does not fit\"";
+				srcCode.append(tab(2) + "if (this.dims() != " + theParam + ".dims()) throw new JLayerException(" + msg + ");\n");
+			}
 		}
 	}
 	
@@ -1305,6 +1329,17 @@ class LayerWriter {
 		String returnBase = getLayerTypeName(unitType, mDescr.returnDescr, DimKind.NN, TypeKind.LI);
 		
 		final int noOfPars = mDescr.paramTypes.size();
+		
+		// throw exception, iff for some layer parameter this.dims() != param.dims()
+		StringBuilder theCheck = new StringBuilder();
+		for (int i = 0; i < noOfPars; i++){
+			String theParam = mDescr.paramNames.get(i);
+			if (mDescr.paramItems.get(i)){
+				theCheck.append("if (this.dims() != " + theParam + ".dims()) throw new JLayerException();\n");
+			}
+		}
+		
+		// the call
 		StringBuilder theCall = new StringBuilder();
 		theCall.append("_layer" + dimKind + "_." + mDescr.itemName + "(");
 		for (int i = 0; i < noOfPars; i++){
@@ -1318,6 +1353,7 @@ class LayerWriter {
 		}
 		theCall.append(")");
 		
+		// if necessary, the return prefix
 		StringBuilder retStr = new StringBuilder();
 		if (returnType.equals("void")){
 			retStr.append(theCall.toString() + "; break;\n");

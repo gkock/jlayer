@@ -1,6 +1,7 @@
 package org.jlayer.util;
 
 import org.jlayer.model.BasedLayer;
+import org.jlayer.util.JLayerException;
 
 public class LayerBase<U> extends LayerCore<U,U> implements BasedLayer<U> {
 		
@@ -11,9 +12,11 @@ public class LayerBase<U> extends LayerCore<U,U> implements BasedLayer<U> {
 		
 		// constructors
 		public D1(BasedLayer.D1<U> layerD1){ 
+			if (layerD1 == null) throw new JLayerException("LayerBase.D1 constructor received a null parameter");
 			this.arrayD1 = layerD1.getBase();
 		}
 		public D1(U[] arrayD1){ 
+			if (arrayD1 == null) throw new JLayerException("LayerBase.D1 constructor received a null parameter");
 			this.arrayD1 = arrayD1;
 		}
 		
@@ -56,9 +59,11 @@ public class LayerBase<U> extends LayerCore<U,U> implements BasedLayer<U> {
 		
 		// constructors
 		public D2(BasedLayer.D2<U> layerD2){ 
+			if (layerD2 == null) throw new JLayerException("LayerBase.D2 constructor received a null parameter");
 			this.arrayD2 = layerD2.getBase();
 		}
 		public D2(U[][] arrayD2){ 
+			if (arrayD2 == null) throw new JLayerException("LayerBase.D2 constructor received a null parameter");
 			this.arrayD2 = arrayD2;
 		}
 		
@@ -105,9 +110,11 @@ public class LayerBase<U> extends LayerCore<U,U> implements BasedLayer<U> {
 		
 		// constructors
 		public D3(BasedLayer.D3<U> layerD3){ 
+			if (layerD3 == null) throw new JLayerException("LayerBase.D3 constructor received a null parameter");
 			this.arrayD3 = layerD3.getBase();
 		}
 		public D3(U[][][] arrayD3){ 
+			if (arrayD3 == null) throw new JLayerException("LayerBase.D3 constructor received a null parameter");
 			this.arrayD3 = arrayD3;
 		}
 		
@@ -162,19 +169,23 @@ public class LayerBase<U> extends LayerCore<U,U> implements BasedLayer<U> {
 	// constructors
 	
 	public LayerBase(U[] arrayD1){ 
+		if (arrayD1 == null) throw new JLayerException("LayerBase constructor received a null parameter");
 		this.layerD1 = new D1<U>(arrayD1);
 		this.dimensionality = 1;
 	}
 	public LayerBase(U[][] arrayD2){ 
+		if (arrayD2 == null) throw new JLayerException("LayerBase constructor received a null parameter");
 		this.layerD2 = new D2<U>(arrayD2);
 		this.dimensionality = 2;
 	}
 	public LayerBase(U[][][] arrayD3){ 
+		if (arrayD3 == null) throw new JLayerException("LayerBase constructor received a null parameter");
 		this.layerD3 = new D3<U>(arrayD3);
 		this.dimensionality = 3;
 	}
 	
 	public LayerBase(BasedLayer<U> layer){ 
+		if (layer == null) throw new JLayerException("LayerBase constructor received a null parameter");
 		switch (layer.dims()) {
 			case 1:
 				this.layerD1 = new D1<U>(layer.getD1().getBase());
@@ -192,14 +203,17 @@ public class LayerBase<U> extends LayerCore<U,U> implements BasedLayer<U> {
 		}
 	}
 	public LayerBase(BasedLayer.D1<U> layerD1){ 
+		if (layerD1 == null) throw new JLayerException("LayerBase constructor received a null parameter");
 		this.layerD1 = new D1<U>(layerD1.getBase());
 		this.dimensionality = 1;
 	}
 	public LayerBase(BasedLayer.D2<U> layerD2){ 
+		if (layerD2 == null) throw new JLayerException("LayerBase constructor received a null parameter");
 		this.layerD2 = new D2<U>(layerD2.getBase());
 		this.dimensionality = 2;
 	}
 	public LayerBase(BasedLayer.D3<U> layerD3){ 
+		if (layerD3 == null) throw new JLayerException("LayerBase constructor received a null parameter");
 		this.layerD3 = new D3<U>(layerD3.getBase());
 		this.dimensionality = 3;
 	}
