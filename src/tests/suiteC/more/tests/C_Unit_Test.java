@@ -13,7 +13,8 @@ import org.jlayer.util.JLayerException;
 
 import static more.tests.Unit.Type;
 
-@Test(groups = {"suiteC", "choice"})
+//@Test(groups = {"suiteC", "choice"})
+@Test(groups = {"suiteC"})
 public class C_Unit_Test {
 	
 	Relation myRel = new Relation() {

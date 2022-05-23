@@ -17,7 +17,7 @@ import org.jlayer.util.IndexTools.Transpose;
 
 /**
  * This class provides the actual implementation of 
- * <strong>VectorLayer's</strong> method <strong>associate()</strong>.
+ * <code>VectorLayer</code>'s method <code>associate()</code>.
  * <p>
  * A flag controlling, whether the implementation uses
  * the <strong>Fork/Join Framework</strong>,

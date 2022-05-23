@@ -21,7 +21,7 @@ import org.jlayer.util.JLayerException;
 
 /**
  * This class provides the method {@link #writeFiles(Element, Unit) writeFiles()},
- * which is used to create layer classes and the related interface and abstract classes.
+ * which is used to create wrapper classes and the related interface and abstract classes.
  * 
  * @author Gerd Kock
  */

@@ -30,6 +30,7 @@
 	<property name="doc.dir" value="doc"/>
 	<property name="javadoc.dir" value="javadoc"/>
 	<property name="javadoc.classes.dir" value="${javadoc.dir}/classes"/>
+	<property name="javadoc.web.dir" value="E:\Dropbox\MLP\Website\www\javadoc"/>
 	<property name="javadoc.tests.dir" value="${javadoc.dir}/tests"/>
 	<property name="deploy.dir" value="deploy"/>
 	
@@ -216,6 +217,26 @@
     		<link href="https://docs.oracle.com/en/java/javase/17/docs/api"/>
     	</javadoc>
     </target>
+	
+	<!-- target: javadoc.web -->
+	    <target name="javadoc.web" depends="init">
+	    	<delete dir="${javadoc.web.dir}" quiet="true"/>
+	    	<mkdir dir="${javadoc.web.dir}"/>
+	    	<javadoc packagenames="org.jlayer.*"
+	    			additionalparam="-Xdoclint:none -quiet"
+	    			sourcepath="${src.classes.dir}"
+	    			defaultexcludes="yes"
+	    			destdir="${javadoc.web.dir}"
+	    			version="true"
+	    			use="true"
+	    			useexternalfile="true"
+	    			access="private"
+	    			overview="${src.classes.dir}/overview.html"
+	    		    windowtitle="JLayer - Development System"
+	    			doctitle="JLayer - Development System">
+	    		<link href="https://docs.oracle.com/en/java/javase/17/docs/api"/>
+	    	</javadoc>
+	    </target>
 	
 	<!-- MEMO additionalparam="-Xdoclint:none -quiet" -->
 	<!-- ... suppresses        -warnings      -output -->

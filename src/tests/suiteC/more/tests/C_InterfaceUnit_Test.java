@@ -13,8 +13,8 @@ import static org.testng.Assert.assertEquals;
  * 
  * @author Gerd Kock
  */
-//@Test(groups = {"suiteC"})
-@Test(groups = {"suiteC", "choice"})
+@Test(groups = {"suiteC"})
+//@Test(groups = {"suiteC", "choice"})
 public class C_InterfaceUnit_Test {
 	
 	// the implementation of InterfaceUnit

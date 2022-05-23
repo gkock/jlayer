@@ -20,7 +20,7 @@ public class MyUnit {
 	public int noItem;
 	
 	@LayerField(isIndex = true)
-	int[] index;
+	public int[] index;
 	
 	@LayerField int intField = 1;
 	@LayerField int[] intVector = new int[]{1};
