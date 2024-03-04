@@ -1,18 +1,34 @@
 <project name="jlayer" default="test.suiteC" basedir=".">
 	
-	<!-- property definitions -->
+	<!-- java source code -->
 	
 	<property name="src.dir" value="src"/>
 	
-	<property name="src.classes.dir" value="${src.dir}/classes"/> <!-- SOURCE CLASSES -->
+	<property name="src.classes.dir" value="${src.dir}/classes"/> 		<!-- SOURCE CLASSES -->
 	
-	<property name="src.units.dir" value="${src.dir}/units"/>     <!-- UNIT CLASSES -->
-	<property name="src.layers.dir" value="${src.dir}/layers"/>   <!-- GENERATED CLASSES -->
+	<property name="src.units.dir" value="${src.dir}/units"/>     		<!-- UNIT CLASSES -->
+	<property name="src.layers.dir" value="${src.dir}/layers"/>   		<!-- GENERATED CLASSES -->
 	 
-	<property name="src.tests.dir" value="${src.dir}/tests"/> 		<!-- TEST CLASSES -->
+	<property name="src.tests.dir" value="${src.dir}/tests"/> 			<!-- TEST CLASSES -->
 	<property name="src.suiteA.dir" value="${src.tests.dir}/suiteA"/>   <!-- TESTING BASICS -->
 	<property name="src.suiteB.dir" value="${src.tests.dir}/suiteB"/>   <!-- TESTING LAYER GENERATION -->
 	<property name="src.suiteC.dir" value="${src.tests.dir}/suiteC"/>   <!-- TESTING GENERATED LAYERS -->
+	
+	<!-- testng reports -->
+	
+	<property name="reports.dir" value="reports"/>
+	<property name="reports.choice.dir" value="${reports.dir}/choice"/>
+	<property name="reports.suiteA.dir" value="${reports.dir}/suiteA"/>
+	<property name="reports.suiteB.dir" value="${reports.dir}/suiteB"/>
+	<property name="reports.suiteC.dir" value="${reports.dir}/suiteC"/>
+	
+	<!-- javadoc -->
+	
+	<property name="javadoc.dir" value="javadoc"/>
+	<property name="javadoc.classes.dir" value="${javadoc.dir}/classes"/>
+	<property name="javadoc.tests.dir" value="${javadoc.dir}/tests"/>
+	
+	<!-- further properties -->
 	
 	<property name="lib.dir" value="lib"/>
 	<property name="lib.classes.dir" value="${lib.dir}/classes"/>
@@ -21,27 +37,25 @@
 	<property name="meta.dir" value="META-INF"/>
 	<property name="build.dir" value="build"/>
 	
-	<property name="reports.dir" value="reports"/>
-	<property name="reports.choice.dir" value="${reports.dir}/choice"/>
-	<property name="reports.suiteA.dir" value="${reports.dir}/suiteA"/>
-	<property name="reports.suiteB.dir" value="${reports.dir}/suiteB"/>
-	<property name="reports.suiteC.dir" value="${reports.dir}/suiteC"/>
+	<property name="dist.dir" value="dist"/>							<!-- MAVEN UPLOAD ETC -->
 	
-	<property name="doc.dir" value="doc"/>
-	<property name="javadoc.dir" value="javadoc"/>
-	<property name="javadoc.classes.dir" value="${javadoc.dir}/classes"/>
-	<property name="javadoc.web.dir" value="E:\Dropbox\MLP\Website\www\javadoc"/>
-	<property name="javadoc.tests.dir" value="${javadoc.dir}/tests"/>
-	<property name="deploy.dir" value="deploy"/>
-	
-	<property name="jar.name" value="jlayer-1.0"/>
-	<property name="atrium.jar.dir" value="C:\Users\gko\Downloads"/>
-	<available file="${atrium.jar.dir}" property="atrium.present"/>
-	<property name="private.jar.dir" value="C:\Users\Dr. Gerd Kock\Downloads"/>
-	<available file="${private.jar.dir}" property="private.present"/>
-	
-	<property name="program.main" value="org.jlayer.processor.UnitVisitorTest"/>
 	<property name="debug" value="on"/>
+	
+	<!-- Maven coordinates -->
+	
+	<property name="groupId" value="org.jlayer" />
+	<property name="artifactId" value="jlayer" />
+	<property name="version" value="1.0.0" />
+	<!-- <property name="version" value="1.0-SNAPSHOT" /> -->
+	
+	<!-- Maven artifacts' name, following the convention of Maven -->
+	
+	<property name="mjar" value="${artifactId}-${version}.jar" />
+	<property name="mjavadoc-jar" value="${artifactId}-${version}-javadoc.jar" />
+	<property name="msources-jar" value="${artifactId}-${version}-sources.jar" />
+	
+	<!-- directory for Maven upload -->
+	<property name="maven.dir" value="${dist.dir}/org/jlayer/jlayer/${version}"/>
 	
 	<!-- path definitions -->
 
@@ -68,6 +82,8 @@
 		</dirset>
 	</path>
 	
+	<!-- basic targets -->
+	
 	<!-- target: clean.layers -->
 	<target name="clean.layers">
 	        <delete includeemptydirs="true" quiet="true">
@@ -79,9 +95,9 @@
     <target name="clean" depends="clean.layers">
     	<delete dir="${build.dir}" quiet="true"/>
     	<delete dir="${reports.dir}" quiet="true"/>
-    	<delete dir="${javadoc.classes.dir}" quiet="true"/>
-    	<delete dir="${javadoc.tests.dir}" quiet="true"/>
-    	<delete dir="${deploy.dir}" quiet="true"/>
+    	<delete dir="${javadoc.dir}" quiet="true"/>
+    	<delete file="${dist.dir}/${mjar}" quiet="true"/>
+    	<delete dir="${dist.dir}/org" quiet="true"/>
     	<delete quiet="true">
     		<fileset dir="." includes="**/*~" defaultexcludes="false"/>
     	</delete>
@@ -91,10 +107,13 @@
     <target name="init">
     	<mkdir dir="${build.dir}"/>
     	<mkdir dir="${reports.dir}"/>
+    	<mkdir dir="${javadoc.dir}"/>
     	<mkdir dir="${javadoc.classes.dir}"/>
     	<mkdir dir="${javadoc.tests.dir}"/>
-    	<mkdir dir="${deploy.dir}"/>
+    	<mkdir dir="${maven.dir}"/>
     </target>
+	
+	<!-- targets for compilation -->
 	
 	<!-- target: compile.classes -->
     <target name="compile.classes" depends="init">
@@ -154,6 +173,8 @@
 		/>
 	</target>
 	
+	<!-- targets for testing -->
+	
 	<!-- target: test.choice -->
 	<target name="test.choice" depends="compile.classes, compile.suiteC">
 		<taskdef resource="testngtasks" classpathref="classpath.tests"/>
@@ -183,7 +204,6 @@
 	
 	<!-- target: test.suiteC -->	<!-- TESTING GENERATED LAYERS -->
 	<target name="test.suiteC" depends="test.suiteB, compile.suiteC">
-	<!-- target name="test.suiteC" depends="compile.units, compile.suiteC"-->
 		<taskdef resource="testngtasks" classpathref="classpath.tests"/>
 	    <testng classpathref="classpath.tests" outputdir="${reports.suiteC.dir}" 
 	    	    groups="suiteC" excludedgroups ="ignore,todo" haltonfailure="true">
@@ -191,111 +211,97 @@
 	    </testng>
 	</target>
 	
-	<!-- target: run -->
-    <target name="run" depends="compile.classes">
-        <java classname="${program.main}" classpathref="classpath" fork="yes">
-        	<arg value="-v"/>
-        </java>
-    </target>
+	<!-- target: generate.jlayer.jar -->
 	
-	<!-- target: javadoc.classes -->
-    <target name="javadoc.classes" depends="init">
-    	<delete dir="${javadoc.classes.dir}" quiet="true"/>
-    	<mkdir dir="${javadoc.classes.dir}"/>
-    	<javadoc packagenames="org.jlayer.*"
-    			additionalparam="-Xdoclint:none -quiet"
-    			sourcepath="${src.classes.dir}"
-    			defaultexcludes="yes"
-    			destdir="${javadoc.classes.dir}"
-    			version="true"
-    			use="true"
-    			useexternalfile="true"
-    			access="private"
-    			overview="${src.classes.dir}/overview.html"
-    		    windowtitle="JLayer - Development System"
-    			doctitle="JLayer - Development System">
-    		<link href="https://docs.oracle.com/en/java/javase/17/docs/api"/>
-    	</javadoc>
-    </target>
+	<target name="generate.jlayer.jar" depends="compile.classes">
+		<!-- build the jlayer library -->
+		<jar jarfile="${dist.dir}/${mjar}">
+			<zipfileset dir="${build.dir}/org" prefix="org/" excludes="**/*_Test*.class"/>
+		    <zipfileset dir="${meta.dir}" prefix="${meta.dir}"/>
+		</jar>
+	</target>
 	
-	<!-- target: javadoc.web -->
-	    <target name="javadoc.web" depends="init">
-	    	<delete dir="${javadoc.web.dir}" quiet="true"/>
-	    	<mkdir dir="${javadoc.web.dir}"/>
-	    	<javadoc packagenames="org.jlayer.*"
-	    			additionalparam="-Xdoclint:none -quiet"
-	    			sourcepath="${src.classes.dir}"
-	    			defaultexcludes="yes"
-	    			destdir="${javadoc.web.dir}"
-	    			version="true"
-	    			use="true"
-	    			useexternalfile="true"
-	    			access="private"
-	    			overview="${src.classes.dir}/overview.html"
-	    		    windowtitle="JLayer - Development System"
-	    			doctitle="JLayer - Development System">
-	    		<link href="https://docs.oracle.com/en/java/javase/17/docs/api"/>
-	    	</javadoc>
-	    </target>
+	<!-- javadoc targets -->
+	
+	<!-- target: generate.javadoc.classes -->
+	<target name="generate.javadoc.classes" depends="compile.classes">
+		<!-- build javadoc for classes -->
+		<javadoc destdir="${javadoc.classes.dir}"
+			packagenames="org.jlayer.*"
+			additionalparam="-Xdoclint:none -quiet"
+			sourcepath="${src.classes.dir}"
+			defaultexcludes="yes"
+			version="true"
+			use="true"
+			useexternalfile="true"
+			access="private"
+			overview="${src.classes.dir}/overview.html"
+		    windowtitle="JLayer - Development System"
+			doctitle="JLayer - Development System">
+			<link href="https://docs.oracle.com/en/java/javase/17/docs/api"/>
+		</javadoc>
+	</target>
+	
+	<!-- target: generate.javadoc.tests -->
+    <target name="generate.javadoc.tests" depends="test.suiteC">
+    	<!-- build javadoc for test classes -->
+		<javadoc packagenames="org.jlayer.*, default, basic.units, faulty.units, more.tests, sandbox"
+				additionalparam="-Xdoclint:none -quiet"
+				sourcepathref="testdirs"
+				classpathref="classpath.tests"
+				defaultexcludes="yes"
+				destdir="${javadoc.tests.dir}"
+				version="true"
+				use="true"
+				useexternalfile="true"
+				access="private"
+				overview="${src.tests.dir}/overview.html"
+			    windowtitle="JLayer - Building and Testing"
+				doctitle="JLayer - Building and Testing">
+			    <link href="https://docs.oracle.com/en/java/javase/17/docs/api"/>
+		</javadoc>
+    </target>
 	
 	<!-- MEMO additionalparam="-Xdoclint:none -quiet" -->
 	<!-- ... suppresses        -warnings      -output -->
+		
+	<!-- target: generate.maven.artifacts -->
 	
-	<!-- target: javadoc.tests -->
-    <target name="javadoc.tests" depends="init">
-    	<delete dir="${javadoc.tests.dir}" quiet="true"/>
-    	<mkdir dir="${javadoc.tests.dir}"/>
-    	<javadoc packagenames="org.jlayer.*, default, basic.units, faulty.units, more.tests, sandbox"
-    			additionalparam="-Xdoclint:none -quiet"
-    			sourcepathref="testdirs"
-    			classpathref="classpath.tests"
-    			defaultexcludes="yes"
-    			destdir="${javadoc.tests.dir}"
-    			version="true"
-    			use="true"
-    			useexternalfile="true"
-    			access="private"
-    			overview="${src.tests.dir}/overview.html"
-    		    windowtitle="JLayer - Building and Testing"
-    			doctitle="JLayer - Building and Testing">
-    		<link href="https://docs.oracle.com/en/java/javase/17/docs/api"/>
-    	</javadoc>
-    </target>
-	
-	<!-- target: deploy -->
-    <target name="deploy" depends="init, javadoc.classes">
-        <jar destfile="${deploy.dir}/${ant.project.name}.jar">
-        	<zipfileset dir="${src.dir}" prefix="${src.dir}"/>
-        	<zipfileset dir="${lib.dir}" prefix="${lib.dir}"/>
-        	<zipfileset dir="${doc.dir}" prefix="${doc.dir}"/>
-        	<zipfileset dir="${javadoc.classes.dir}" prefix="${javadoc.classes.dir}"/>
-        	<fileset file="build.xml"/>
-        </jar>
-    </target>
-	
-	<!-- target: export.jar.atrium -->
-    <target name="export.jar.atrium" if="atrium.present" depends="compile.classes">
-        <jar destfile="${atrium.jar.dir}/${jar.name}.jar">
-        	<zipfileset dir="${build.dir}/org" prefix="org/" excludes="**/*_Test*.class"/>
-        	<zipfileset dir="${meta.dir}" prefix="${meta.dir}"/>
-        </jar>
-    	<echo>"${jar.name}.jar" has been exported to "${atrium.jar.dir}/ </echo>
-    </target>
-	
-	<!-- target: export.jar.private -->
-    <target name="export.jar.private" if="private.present" depends="compile.classes">
-        <jar destfile="${private.jar.dir}/${jar.name}.jar">
-        	<zipfileset dir="${build.dir}/org" prefix="org/" excludes="**/*_Test*.class"/>
-        	<zipfileset dir="${meta.dir}" prefix="${meta.dir}"/>
-        </jar>
-    	<echo>"${jar.name}.jar" has been exported to "${private.jar.dir}/ </echo>
-    </target>
-	
-	<!-- target: export.jar -->
-    <target name="export.jar" depends="export.jar.atrium, export.jar.private"/>
+	<target name="generate.maven.artifacts" depends="generate.jlayer.jar, generate.javadoc.classes">
+		<!-- provide the POM file -->
+		<copy file="${dist.dir}/pom.xml" tofile="${maven.dir}/pom.xml" />
+		<replace file="${maven.dir}/pom.xml" token="4711" value="${version}" />
+		<!-- provide the main artifact -->
+		<copy file="${dist.dir}/${mjar}" tofile="${maven.dir}/${mjar}" />
+		<!-- build the sources jar -->
+	    <jar jarfile="${maven.dir}/${msources-jar}">
+	        <fileset dir="${src.classes.dir}">
+	        	<exclude name="overview.html"/>
+	    	</fileset>
+	    </jar>
+		<!-- provide the javadoc jar -->
+		<jar jarfile="${maven.dir}/${mjavadoc-jar}">
+			<fileset dir="${javadoc.classes.dir}" />
+		</jar>
+		<!-- provide the checksums -->
+		<checksum file="${maven.dir}/pom.xml" algorithm="md5" />
+		<checksum file="${maven.dir}/pom.xml" algorithm="sha-1" />
+		<checksum file="${maven.dir}/${mjar}" algorithm="md5" />
+		<checksum file="${maven.dir}/${mjar}" algorithm="sha-1" />
+		<checksum file="${maven.dir}/${msources-jar}" algorithm="md5" />
+		<checksum file="${maven.dir}/${msources-jar}" algorithm="sha-1" />
+		<checksum file="${maven.dir}/${mjavadoc-jar}" algorithm="md5" />
+		<checksum file="${maven.dir}/${mjavadoc-jar}" algorithm="sha-1" />
+		<!-- provide signed files and final zip-file -->
+		<echo>PROVIDE SIGNED FILES AND ZIP-FILE</echo>
+		<echo>> gpg2 -ab *.jar</echo>
+		<echo>> gpg2 -ab *.xml</echo>
+		<echo>> zip -r jlayer.zip org</echo>
+	</target>
 	
 	<!-- target: all -->
+	
     <target name="all" depends="clean,compile.suiteA,test.suiteA,
-    	compile.suiteB,test.suiteB,compile.suiteC,test.suiteC,javadoc.classes,deploy"/>
+    	compile.suiteB,test.suiteB,compile.suiteC,test.suiteC"/>
 
 </project>

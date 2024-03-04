@@ -28,10 +28,18 @@ reports/
 *.zip
 *.tar.gz
 *.rar
+*.MD5
+*.SHA-1
+*.md5
+*.sha-1
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 /bin/
+
+# do not ignore these files
+dist/lib/*
+dist/org
 
 # do not ignore these files
 !overview.html

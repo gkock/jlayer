@@ -1,0 +1,32 @@
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
+  <modelVersion>4.0.0</modelVersion>
+  
+  <!-- The Basics -->
+  <groupId>org.jlayer</groupId>
+  <artifactId>jlayer</artifactId>
+  <version>4711</version>
+  <name>jlayer</name>
+  <description>JLayer - The Java Implementatuíon of the Layer Concept</description>
+  <url>http://www.jlayer.org</url>
+  
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+  
+  <developers>
+  	<developer>
+	  <name>Gerd Kock</name>
+	  <email>gerd.kock@jlayer.org</email>
+  	</developer>
+  </developers>
+  
+  <scm>
+	  <connection>scm:git:git://github.com/gkock/jlayer.git</connection>
+	  <url>http://github.com/gkock/jlayer/tree/main</url>
+  </scm>
+  
+</project>
